@@ -14,16 +14,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'frontend_for_banking_application' title`, () => {
+  it(`should have the 'Real-Time Chat Application' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('frontend_for_banking_application');
+    expect(app.title).toEqual('Real-Time Chat Application');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, frontend_for_banking_application');
+    expect(compiled.querySelector('.navbar-brand')?.textContent).toContain('Real-Time Chat Application');
   });
 });

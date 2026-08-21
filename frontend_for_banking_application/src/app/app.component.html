@@ -1,15 +1,34 @@
 <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
-   <ul class="navbar-nav">
-      <li class="nav-item">
-         <a routerLink="accounts" routerLinkActive="active" class="nav-link">Account List</a>
-      </li>
-
-      <li class="nav-item">
-         <a routerLink="create-account" routerLinkActive="active" class="nav-link">Add Account</a>
-      </li>
-   </ul>
+   <div class="container-fluid">
+      <a class="navbar-brand text-white" href="#">Real-Time Chat Application</a>
+   </div>
 </nav>
-<h1 class="text-center">{{title}}</h1>
-<div class="container">
-<router-outlet></router-outlet>
+
+<div class="container mt-4">
+  <div class="card shadow" style="max-width: 600px; margin: auto;">
+    
+    <div *ngIf="!isLoggedIn" class="card-body text-center p-5">
+      <h4>Join Chat Room</h4>
+      <div class="input-group mt-3">
+        <input type="text" [(ngModel)]="username" class="form-control" placeholder="Enter your username..." />
+        <button class="btn btn-success" (click)="connect()">Connect</button>
+      </div>
+    </div>
+
+    <div *ngIf="isLoggedIn" class="card-body">
+      <div class="alert alert-info py-1">Logged in as: <strong>{{ username }}</strong></div>
+      
+      <div class="border rounded p-3 mb-3" style="height: 300px; overflow-y: auto; background-color: #f8f9fa;">
+        <div *ngFor="let msg of messages" class="mb-2">
+          <span class="badge bg-secondary">{{ msg.sender }}</span>: {{ msg.content }}
+        </div>
+      </div>
+
+      <div class="input-group">
+        <input type="text" [(ngModel)]="messageContent" (keyup.enter)="sendMessage()" class="form-control" placeholder="Type a message..." />
+        <button class="btn btn-primary" (click)="sendMessage()">Send</button>
+      </div>
+    </div>
+
+  </div>
 </div>
