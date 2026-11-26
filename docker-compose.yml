@@ -1,0 +1,47 @@
+services:
+  mysql-db:
+    image: mysql:8.0
+    container_name: banking-mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: bankingapp
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-480404}
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p480404"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: ./BankingApplication
+      dockerfile: Dockerfile
+    container_name: banking-backend
+    restart: always
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/bankingapp?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD:-480404}
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build:
+      context: ./frontend_for_banking_application
+      dockerfile: Dockerfile
+    container_name: banking-frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "4200:80"
+
+volumes:
+  mysql_data:

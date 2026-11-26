@@ -23,7 +23,7 @@ export class AppComponent {
   connect() {
     if (this.username && this.username.trim() !== '') {
       this.isLoggedIn = true;
-      const socket = new SockJS('http://localhost:8080/ws');
+      const socket = new SockJS('/ws');
       this.stompClient = Stomp.over(socket);
 
       this.stompClient.connect({}, (frame: any) => {
